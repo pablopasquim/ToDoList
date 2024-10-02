@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -69,11 +72,13 @@ fun LayoutMain(){
         modifier = Modifier
             .fillMaxSize()
             .padding(21.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
 
-        Text(text = "TO DO LIST", fontSize = 20.sp)
+        Text(
+            text = "TO DO LIST",
+            fontSize = 20.sp,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
 
         Spacer(modifier = Modifier.height(14.dp))
 
@@ -83,24 +88,30 @@ fun LayoutMain(){
 
         } else{
 
-            LazyColumn{
-
-                items(toDo){
-
-                    toDo ->
+            LazyColumn {
+                items(toDo) { toDo ->
 
                     Spacer(modifier = Modifier.height(14.dp))
-                    Text(text = "User Id: ${toDo.userId}", fontSize = 14.sp)
 
-                    Text(text = "Id: ${toDo.id}", fontSize = 14.sp)
 
-                    Text(text = "Title: ${toDo.title}", fontSize = 14.sp)
+                    val backgroundColor = if (toDo.completed) Color.Green else Color(0xFFFFA500)
 
-                    Text(text = "Completed: ${toDo.completed}", fontSize = 14.sp)
-
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(backgroundColor)
+                            .padding(8.dp)
+                    ) {
+                        Text(text = "User Id: ${toDo.userId}", fontSize = 14.sp)
+                        Text(text = "Id: ${toDo.id}", fontSize = 14.sp)
+                        Text(text = "Title: ${toDo.title}", fontSize = 14.sp)
+                        Text(
+                            text = "Status: ${if (toDo.completed) "Completa" else "Incompleta"}",
+                            fontSize = 14.sp
+                        )
+                    }
                 }
             }
         }
-
     }
 }
